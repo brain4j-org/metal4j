@@ -7,8 +7,6 @@ import java.lang.foreign.MemorySegment;
 import java.lang.foreign.ValueLayout;
 import java.lang.invoke.MethodHandle;
 
-import static org.metal4j.Metal4J.*;
-
 public record MetalPipeline(MemorySegment handle) implements MetalObject {
 
     public static final MethodHandle METAL_MAKE_PIPELINE = LINKER.downcallHandle(

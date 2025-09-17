@@ -6,8 +6,6 @@ import org.metal4j.buffer.MetalCommandBuffer;
 import java.lang.foreign.*;
 import java.lang.invoke.MethodHandle;
 
-import static org.metal4j.Metal4J.*;
-
 public record MetalCommandQueue(MemorySegment handle) implements MetalObject {
 
     public static final MethodHandle METAL_CREATE_COMMAND_QUEUE = LINKER.downcallHandle(

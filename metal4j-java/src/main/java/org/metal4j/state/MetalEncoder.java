@@ -6,8 +6,6 @@ import org.metal4j.buffer.MetalBuffer;
 import java.lang.foreign.*;
 import java.lang.invoke.MethodHandle;
 
-import static org.metal4j.Metal4J.*;
-
 public record MetalEncoder(MemorySegment handle) implements MetalObject, AutoCloseable {
 
     public static final MethodHandle METAL_ENCODER_SET_BUFFER = LINKER.downcallHandle(

@@ -10,9 +10,6 @@ import java.lang.foreign.MemorySegment;
 import java.lang.foreign.ValueLayout;
 import java.lang.invoke.MethodHandle;
 
-import static org.metal4j.Metal4J.LINKER;
-import static org.metal4j.Metal4J.LOOKUP;
-
 public record MetalCommandBuffer(MemorySegment handle) implements MetalObject {
 
     public static final MethodHandle METAL_CREATE_COMMAND_BUFFER = LINKER.downcallHandle(

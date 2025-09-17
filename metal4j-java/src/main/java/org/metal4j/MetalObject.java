@@ -1,23 +1,23 @@
 package org.metal4j;
 
-import java.lang.foreign.FunctionDescriptor;
-import java.lang.foreign.MemorySegment;
-import java.lang.foreign.ValueLayout;
+import java.lang.foreign.*;
 import java.lang.invoke.MethodHandle;
-
-import static org.metal4j.Metal4J.LINKER;
-import static org.metal4j.Metal4J.LOOKUP;
+import java.nio.file.Path;
 
 public interface MetalObject {
 
-    MethodHandle metalReleaseObject = LINKER.downcallHandle(
+    Linker LINKER = Linker.nativeLinker();
+    Path LIB_PATH = Path.of("metal4j-java/natives/libmetal4j.dylib");
+    SymbolLookup LOOKUP = SymbolLookup.libraryLookup(LIB_PATH.toAbsolutePath().toString(), Arena.global());
+
+    MethodHandle METAL_RELEASE_OBJECT = LINKER.downcallHandle(
         LOOKUP.find("metal_release_object").get(),
         FunctionDescriptor.ofVoid(ValueLayout.ADDRESS)
     );
 
-    MemorySegment handle();
-
     default void release() throws Throwable {
-        metalReleaseObject.invokeExact(handle());
+        METAL_RELEASE_OBJECT.invokeExact(handle());
     }
+
+    MemorySegment handle();
 }

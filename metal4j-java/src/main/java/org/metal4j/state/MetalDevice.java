@@ -7,8 +7,6 @@ import org.metal4j.kernel.MetalLibrary;
 import java.lang.foreign.*;
 import java.lang.invoke.MethodHandle;
 
-import static org.metal4j.Metal4J.*;
-
 public record MetalDevice(MemorySegment handle) implements MetalObject {
 
     public static final MethodHandle METAL_DEVICE_NAME = LINKER.downcallHandle(

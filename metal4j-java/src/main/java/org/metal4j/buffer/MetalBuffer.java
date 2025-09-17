@@ -10,8 +10,6 @@ import java.lang.invoke.MethodHandle;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
-import static org.metal4j.Metal4J.*;
-
 public record MetalBuffer(MemorySegment handle, int length) implements MetalObject {
 
     public static final MethodHandle METAL_NEW_BUFFER = LINKER.downcallHandle(

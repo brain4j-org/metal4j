@@ -5,8 +5,6 @@ import org.metal4j.MetalObject;
 import java.lang.foreign.*;
 import java.lang.invoke.MethodHandle;
 
-import static org.metal4j.Metal4J.*;
-
 public record MetalFunction(MemorySegment handle) implements MetalObject {
 
     public static final MethodHandle METAL_CREATE_FUNCTION = LINKER.downcallHandle(
