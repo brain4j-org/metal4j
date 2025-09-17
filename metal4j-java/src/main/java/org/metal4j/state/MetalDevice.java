@@ -10,11 +10,11 @@ import java.lang.invoke.MethodHandle;
 public record MetalDevice(MemorySegment handle) implements MetalObject {
 
     public static final MethodHandle METAL_DEVICE_NAME = LINKER.downcallHandle(
-        LOOKUP.find("metal_device_name").get(),
+        LOOKUP.find("metal_device_name").orElse(null),
         FunctionDescriptor.of(ValueLayout.ADDRESS, ValueLayout.ADDRESS)
     );
     public static final MethodHandle METAL_CREATE_SYSTEM_DEVICE = LINKER.downcallHandle(
-        LOOKUP.find("metal_create_system_device").get(),
+        LOOKUP.find("metal_create_system_device").orElse(null),
         FunctionDescriptor.of(ValueLayout.ADDRESS)
     );
 

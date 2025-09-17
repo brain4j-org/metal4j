@@ -13,11 +13,11 @@ import java.nio.ByteOrder;
 public record MetalBuffer(MemorySegment handle, int length) implements MetalObject {
 
     public static final MethodHandle METAL_NEW_BUFFER = LINKER.downcallHandle(
-        LOOKUP.find("metal_new_buffer").get(),
+        LOOKUP.find("metal_new_buffer").orElse(null),
         FunctionDescriptor.of(ValueLayout.ADDRESS, ValueLayout.ADDRESS, ValueLayout.JAVA_INT)
     );
     public static final MethodHandle METAL_BUFFER_CONTENTS = LINKER.downcallHandle(
-        LOOKUP.find("metal_buffer_contents").get(),
+        LOOKUP.find("metal_buffer_contents").orElse(null),
         FunctionDescriptor.of(ValueLayout.ADDRESS, ValueLayout.ADDRESS)
     );
 

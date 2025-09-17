@@ -9,7 +9,7 @@ import java.lang.invoke.MethodHandle;
 public record MetalLibrary(MemorySegment handle) implements MetalObject {
 
     public static final MethodHandle METAL_CREATE_LIBRARY = LINKER.downcallHandle(
-        LOOKUP.find("metal_create_library").get(),
+        LOOKUP.find("metal_create_library").orElse(null),
         FunctionDescriptor.of(ValueLayout.ADDRESS,  // return MTLLibrary*
             ValueLayout.ADDRESS,                    // device (MTLDevice*)
             ValueLayout.ADDRESS)                    // kernel source (char*)

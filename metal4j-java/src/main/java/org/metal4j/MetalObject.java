@@ -11,7 +11,7 @@ public interface MetalObject {
     SymbolLookup LOOKUP = SymbolLookup.libraryLookup(LIB_PATH.toAbsolutePath().toString(), Arena.global());
 
     MethodHandle METAL_RELEASE_OBJECT = LINKER.downcallHandle(
-        LOOKUP.find("metal_release_object").get(),
+        LOOKUP.find("metal_release_object").orElse(null),
         FunctionDescriptor.ofVoid(ValueLayout.ADDRESS)
     );
 

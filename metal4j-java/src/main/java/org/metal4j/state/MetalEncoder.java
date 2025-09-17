@@ -9,15 +9,15 @@ import java.lang.invoke.MethodHandle;
 public record MetalEncoder(MemorySegment handle) implements MetalObject, AutoCloseable {
 
     public static final MethodHandle METAL_ENCODER_SET_BUFFER = LINKER.downcallHandle(
-            LOOKUP.find("metal_encoder_set_buffer").get(),
+            LOOKUP.find("metal_encoder_set_buffer").orElse(null),
             FunctionDescriptor.ofVoid(ValueLayout.ADDRESS, ValueLayout.ADDRESS, ValueLayout.JAVA_INT)
     );
     public static final MethodHandle METAL_DISPATCH = LINKER.downcallHandle(
-        LOOKUP.find("metal_dispatch").get(),
+        LOOKUP.find("metal_dispatch").orElse(null),
         FunctionDescriptor.ofVoid(ValueLayout.ADDRESS, ValueLayout.JAVA_INT)
     );
     public static final MethodHandle METAL_END_ENCODING = LINKER.downcallHandle(
-        LOOKUP.find("metal_end_encoding").get(),
+        LOOKUP.find("metal_end_encoding").orElse(null),
         FunctionDescriptor.ofVoid(ValueLayout.ADDRESS)
     );
 

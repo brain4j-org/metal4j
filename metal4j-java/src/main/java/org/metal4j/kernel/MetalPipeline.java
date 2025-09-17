@@ -10,7 +10,7 @@ import java.lang.invoke.MethodHandle;
 public record MetalPipeline(MemorySegment handle) implements MetalObject {
 
     public static final MethodHandle METAL_MAKE_PIPELINE = LINKER.downcallHandle(
-        LOOKUP.find("metal_make_pipeline").get(),
+        LOOKUP.find("metal_make_pipeline").orElse(null),
         FunctionDescriptor.of(ValueLayout.ADDRESS, ValueLayout.ADDRESS)
     );
 

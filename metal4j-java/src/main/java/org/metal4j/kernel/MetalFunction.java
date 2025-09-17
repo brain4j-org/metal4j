@@ -8,7 +8,7 @@ import java.lang.invoke.MethodHandle;
 public record MetalFunction(MemorySegment handle) implements MetalObject {
 
     public static final MethodHandle METAL_CREATE_FUNCTION = LINKER.downcallHandle(
-        LOOKUP.find("metal_create_function").get(),
+        LOOKUP.find("metal_create_function").orElse(null),
         FunctionDescriptor.of(ValueLayout.ADDRESS, // return MTLFunction*
             ValueLayout.ADDRESS,                  // library (MTLLibrary*)
             ValueLayout.ADDRESS)                  // function name (char*)

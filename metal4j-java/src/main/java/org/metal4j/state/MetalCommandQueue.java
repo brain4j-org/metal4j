@@ -9,7 +9,7 @@ import java.lang.invoke.MethodHandle;
 public record MetalCommandQueue(MemorySegment handle) implements MetalObject {
 
     public static final MethodHandle METAL_CREATE_COMMAND_QUEUE = LINKER.downcallHandle(
-        LOOKUP.find("metal_create_command_queue").get(),
+        LOOKUP.find("metal_create_command_queue").orElse(null),
         FunctionDescriptor.of(ValueLayout.ADDRESS, // return MTLCommandQueue*
             ValueLayout.ADDRESS)                   // device (MTLDevice*)
     );
