@@ -1,0 +1,36 @@
+package org.metal4j.kernel;
+
+import org.metal4j.MetalObject;
+import org.metal4j.state.MetalDevice;
+
+import java.lang.foreign.*;
+import java.lang.invoke.MethodHandle;
+
+import static org.metal4j.Metal4J.*;
+
+public record MetalLibrary(MemorySegment handle) implements MetalObject {
+
+    public static final MethodHandle METAL_CREATE_LIBRARY = LINKER.downcallHandle(
+        LOOKUP.find("metal_create_library").get(),
+        FunctionDescriptor.of(ValueLayout.ADDRESS,  // return MTLLibrary*
+            ValueLayout.ADDRESS,                    // device (MTLDevice*)
+            ValueLayout.ADDRESS)                    // kernel source (char*)
+    );
+
+    public static MetalLibrary makeLibrary(MetalDevice device, String source) throws Throwable {
+        try (Arena arena = Arena.ofConfined()) {
+            MemorySegment src = arena.allocateFrom(source);
+            MemorySegment libPtr = (MemorySegment) METAL_CREATE_LIBRARY.invokeExact(device.handle(), src);
+
+            if (libPtr == null) {
+                throw new RuntimeException("Failed to compile Metal library");
+            }
+
+            return new MetalLibrary(libPtr);
+        }
+    }
+
+    public MetalFunction makeFunction(String name) throws Throwable {
+        return MetalFunction.create(this, name);
+    }
+}
