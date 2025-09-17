@@ -37,6 +37,7 @@ public record MetalEncoder(MemorySegment handle) implements MetalObject, AutoClo
     public void close() {
         try {
             endEncoding();
+            release();
         } catch (Throwable e) {
             throw new RuntimeException(e);
         }
