@@ -34,17 +34,34 @@ public func metal_encoder_set_buffer(
 @_cdecl("metal_dispatch")
 public func metal_dispatch(
     encPtr: UnsafeMutableRawPointer,
-    cmdBufPtr: UnsafeMutableRawPointer,
     threadCount: Int
 ) {
     let encoder: MTLComputeCommandEncoder = pointerToObject(encPtr)
-    let cmdBuf: MTLCommandBuffer = pointerToObject(cmdBufPtr)
 
     let gridSize = MTLSize(width: threadCount, height: 1, depth: 1)
     let threadgroupSize = MTLSize(width: 1, height: 1, depth: 1)
 
     encoder.dispatchThreads(gridSize, threadsPerThreadgroup: threadgroupSize)
+}
+
+@_cdecl("metal_end_encoding")
+public func metal_end_encoding(encPtr: UnsafeMutableRawPointer) {
+    let encoder: MTLComputeCommandEncoder = pointerToObject(encPtr)
     encoder.endEncoding()
+}
+
+@_cdecl("metal_commit")
+public func metal_commit(
+    cmdBufPtr: UnsafeMutableRawPointer
+) {
+    let cmdBuf: MTLCommandBuffer = pointerToObject(cmdBufPtr)
     cmdBuf.commit()
+}
+
+@_cdecl("metal_wait_until_completed")
+public func metal_wait_until_completed(
+    cmdBufPtr: UnsafeMutableRawPointer
+) {
+    let cmdBuf: MTLCommandBuffer = pointerToObject(cmdBufPtr)
     cmdBuf.waitUntilCompleted()
 }

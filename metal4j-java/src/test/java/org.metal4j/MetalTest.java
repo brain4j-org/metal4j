@@ -30,7 +30,6 @@ public class MetalTest {
         MetalLibrary lib = device.makeLibrary(src);
         MetalFunction function = lib.makeFunction("vadd");
         MetalPipeline pipeline = function.makePipeline();
-        MetalCommandQueue queue = device.makeCommandQueue();
 
         System.out.println("Kernel compiled and queue ready!");
 
@@ -41,14 +40,27 @@ public class MetalTest {
         bufA.asByteBuffer().asFloatBuffer().put(new float[]{1,2,3,4,5,6,7,8});
         bufB.asByteBuffer().asFloatBuffer().put(new float[]{10,20,30,40,50,60,70,80});
 
+        MetalCommandQueue queue = device.makeCommandQueue();
         MetalCommandBuffer commandBuffer = queue.makeCommandBuffer();
-        MetalEncoder encoder = commandBuffer.makeEncoder(pipeline);
 
-        encoder.setBuffer(bufA, 0);
-        encoder.setBuffer(bufB, 1);
-        encoder.setBuffer(bufC, 2);
+        try (MetalEncoder encoder = commandBuffer.makeEncoder(pipeline)) {
+            encoder.setBuffer(bufA, 0);
+            encoder.setBuffer(bufB, 1);
+            encoder.setBuffer(bufC, 2);
 
-        encoder.dispatch(commandBuffer, 8);
+            for (int i = 0; i < 100; i++) {
+                encoder.dispatch(8);
+            }
+        }
+
+        long start = System.nanoTime();
+
+        commandBuffer.commit();
+        commandBuffer.waitUntilCompleted();
+
+        long end = System.nanoTime();
+        double took = (end - start) / 1e6;
+        System.out.println("Took " + took + " millis");
 
         float[] C = new float[8];
         bufC.asByteBuffer().asFloatBuffer().get(C);
