@@ -12,7 +12,7 @@ import org.metal4j.state.MetalEncoder;
 import java.util.Arrays;
 
 public class MetalTest {
-    public static void main(String[] args) throws Throwable {
+    static void main() throws Throwable {
         MetalDevice device = MetalDevice.createSystemDevice();
         System.out.println("Device: " + device.getName());
 
