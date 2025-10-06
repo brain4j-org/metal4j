@@ -1,0 +1,1 @@
+slangc example_kernel.slang -target metal -o example_kernel.metal

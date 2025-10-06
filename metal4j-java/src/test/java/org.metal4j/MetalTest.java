@@ -9,26 +9,20 @@ import org.metal4j.kernel.MetalPipeline;
 import org.metal4j.state.MetalCommandQueue;
 import org.metal4j.state.MetalEncoder;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Arrays;
 
 public class MetalTest {
-    static void main() throws Throwable {
+    public static void main(String[] args) throws Throwable {
         MetalDevice device = MetalDevice.createSystemDevice();
         System.out.println("Device: " + device.getName());
 
-        String src = """
-        kernel void vadd(
-            device const float* A [[ buffer(0) ]],
-            device const float* B [[ buffer(1) ]],
-            device float* C [[ buffer(2) ]],
-            uint id [[ thread_position_in_grid ]]
-        ) {
-            C[id] = A[id] + B[id];
-        }
-        """;
+        byte[] compiledSrcRaw = Files.readAllBytes(Path.of("example_kernel.metal"));
+        String compiledSrc = new String(compiledSrcRaw);
 
-        MetalLibrary lib = device.makeLibrary(src);
-        MetalFunction function = lib.makeFunction("vadd");
+        MetalLibrary lib = device.makeLibrary(compiledSrc);
+        MetalFunction function = lib.makeFunction("add");
         MetalPipeline pipeline = function.makePipeline();
 
         System.out.println("Kernel compiled and queue ready!");
@@ -48,9 +42,7 @@ public class MetalTest {
             encoder.setBuffer(bufB, 1);
             encoder.setBuffer(bufC, 2);
 
-            for (int i = 0; i < 100; i++) {
-                encoder.dispatch(8);
-            }
+            encoder.dispatch(8);
         }
 
         long start = System.nanoTime();
