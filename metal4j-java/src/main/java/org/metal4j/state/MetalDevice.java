@@ -4,7 +4,9 @@ import org.metal4j.MetalObject;
 import org.metal4j.buffer.MetalBuffer;
 import org.metal4j.kernel.MetalLibrary;
 
-import java.lang.foreign.*;
+import java.lang.foreign.FunctionDescriptor;
+import java.lang.foreign.MemorySegment;
+import java.lang.foreign.ValueLayout;
 import java.lang.invoke.MethodHandle;
 
 public record MetalDevice(MemorySegment handle) implements MetalObject {

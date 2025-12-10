@@ -3,7 +3,9 @@ package org.metal4j.state;
 import org.metal4j.MetalObject;
 import org.metal4j.buffer.MetalBuffer;
 
-import java.lang.foreign.*;
+import java.lang.foreign.FunctionDescriptor;
+import java.lang.foreign.MemorySegment;
+import java.lang.foreign.ValueLayout;
 import java.lang.invoke.MethodHandle;
 
 public record MetalEncoder(MemorySegment handle) implements MetalObject, AutoCloseable {

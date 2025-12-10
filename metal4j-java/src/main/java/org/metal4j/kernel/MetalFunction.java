@@ -2,7 +2,10 @@ package org.metal4j.kernel;
 
 import org.metal4j.MetalObject;
 
-import java.lang.foreign.*;
+import java.lang.foreign.Arena;
+import java.lang.foreign.FunctionDescriptor;
+import java.lang.foreign.MemorySegment;
+import java.lang.foreign.ValueLayout;
 import java.lang.invoke.MethodHandle;
 
 public record MetalFunction(MemorySegment handle) implements MetalObject {
