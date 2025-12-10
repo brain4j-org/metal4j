@@ -15,24 +15,29 @@ import java.util.Arrays;
 
 public class MetalTest {
     public static void main(String[] args) throws Throwable {
-        MetalDevice device = MetalDevice.createSystemDevice();
-        System.out.println("Device: " + device.getName());
-
         byte[] compiledSrcRaw = Files.readAllBytes(Path.of("example_kernel.metal"));
         String compiledSrc = new String(compiledSrcRaw);
+        int N = 1000000;
 
+        MetalDevice device = MTL.createSystemDevice();
         MetalLibrary lib = device.makeLibrary(compiledSrc);
         MetalFunction function = lib.makeFunction("add");
         MetalPipeline pipeline = function.makePipeline();
 
-        System.out.println("Kernel compiled and queue ready!");
+        MetalBuffer bufA = device.makeBuffer(N * Float.BYTES);
+        MetalBuffer bufB = device.makeBuffer(N * Float.BYTES);
+        MetalBuffer bufC = device.makeBuffer(N * Float.BYTES);
 
-        MetalBuffer bufA = device.allocate(8 * Float.BYTES);
-        MetalBuffer bufB = device.allocate(8 * Float.BYTES);
-        MetalBuffer bufC = device.allocate(8 * Float.BYTES);
+        float[] a = new float[N];
+        float[] b = new float[N];
 
-        bufA.asByteBuffer().asFloatBuffer().put(new float[]{1,2,3,4,5,6,7,8});
-        bufB.asByteBuffer().asFloatBuffer().put(new float[]{10,20,30,40,50,60,70,80});
+        for (int i = 0; i < N; i++) {
+            a[i] = i + 1;
+            b[i] = (i + 1) * 10;
+        }
+
+        bufA.put(a);
+        bufB.put(b);
 
         MetalCommandQueue queue = device.makeCommandQueue();
         MetalCommandBuffer commandBuffer = queue.makeCommandBuffer();
@@ -55,8 +60,9 @@ public class MetalTest {
         System.out.println("Took " + took + " millis");
 
         float[] C = new float[8];
-        bufC.asByteBuffer().asFloatBuffer().get(C);
+        bufC.get(C);
 
+        System.out.println("Device: " + device.getName());
         System.out.println("Computed on GPU: " + Arrays.toString(C));
     }
 }

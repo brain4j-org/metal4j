@@ -14,7 +14,7 @@ public record MetalCommandQueue(MemorySegment handle) implements MetalObject {
             ValueLayout.ADDRESS)                   // device (MTLDevice*)
     );
 
-    public static MetalCommandQueue create(MetalDevice device) throws Throwable {
+    public static MetalCommandQueue makeCommandQueue(MetalDevice device) throws Throwable {
         MemorySegment queuePtr = (MemorySegment) METAL_CREATE_COMMAND_QUEUE.invokeExact(device.handle());
 
         if (queuePtr == null) {

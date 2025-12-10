@@ -13,19 +13,10 @@ public record MetalDevice(MemorySegment handle) implements MetalObject {
         LOOKUP.find("metal_device_name").orElse(null),
         FunctionDescriptor.of(ValueLayout.ADDRESS, ValueLayout.ADDRESS)
     );
-    public static final MethodHandle METAL_CREATE_SYSTEM_DEVICE = LINKER.downcallHandle(
-        LOOKUP.find("metal_create_system_device").orElse(null),
-        FunctionDescriptor.of(ValueLayout.ADDRESS)
-    );
-
-    public static MetalDevice createSystemDevice() throws Throwable {
-        MemorySegment ptr = (MemorySegment) METAL_CREATE_SYSTEM_DEVICE.invokeExact();
-        return new MetalDevice(ptr);
-    }
 
     public String getName() throws Throwable {
-        MemorySegment cstrPtr = (MemorySegment) METAL_DEVICE_NAME.invokeExact(handle);
-        return cstrPtr.reinterpret(Long.MAX_VALUE).getString(0);
+        MemorySegment nameHandle = (MemorySegment) METAL_DEVICE_NAME.invokeExact(handle);
+        return nameHandle.reinterpret(Long.MAX_VALUE).getString(0);
     }
 
     public MetalLibrary makeLibrary(String source) throws Throwable {
@@ -33,10 +24,10 @@ public record MetalDevice(MemorySegment handle) implements MetalObject {
     }
 
     public MetalCommandQueue makeCommandQueue() throws Throwable {
-        return MetalCommandQueue.create(this);
+        return MetalCommandQueue.makeCommandQueue(this);
     }
 
-    public MetalBuffer allocate(int length) throws Throwable {
-        return MetalBuffer.allocate(this, length);
+    public MetalBuffer makeBuffer(int length) throws Throwable {
+        return MetalBuffer.makeBuffer(this, length);
     }
 }
