@@ -9,7 +9,7 @@ import java.lang.invoke.MethodHandle;
 
 import static org.metal4j.MetalObject.*;
 
-public class MTL {
+public class Metal {
 
     public static final MethodHandle METAL_CREATE_SYSTEM_DEVICE = LINKER.downcallHandle(
         LOOKUP.find("metal_create_system_device").orElse(null),

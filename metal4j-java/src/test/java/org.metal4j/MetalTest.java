@@ -19,7 +19,7 @@ public class MetalTest {
         String compiledSrc = new String(compiledSrcRaw);
         int N = 1000000;
 
-        MetalDevice device = MTL.createSystemDevice();
+        MetalDevice device = Metal.createSystemDevice();
         MetalLibrary lib = device.makeLibrary(compiledSrc);
         MetalFunction function = lib.makeFunction("add");
         MetalPipeline pipeline = function.makePipeline();
