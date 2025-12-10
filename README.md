@@ -16,7 +16,7 @@ introduced in Java 22 and stabilized in Java 25. It enables GPU programming on m
 ## Requirements
 
 * macOS 13 or newer (Metal supported natively)
-* Java 25 or later
+* Java 22 or later
 * Gradle or Maven build tool
 
 ## Roadmap
@@ -31,7 +31,6 @@ introduced in Java 22 and stabilized in Java 25. It enables GPU programming on m
 
 * [Apple Metal API](https://developer.apple.com/metal/)
 * [JEP 454: Foreign Function & Memory API](https://openjdk.org/jeps/454)
-* [Java 25 Release Notes](https://openjdk.org/projects/jdk/25/)
 
 ## Contributing
 
