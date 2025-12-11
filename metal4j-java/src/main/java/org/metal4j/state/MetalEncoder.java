@@ -16,7 +16,10 @@ public record MetalEncoder(MemorySegment handle) implements MetalObject, AutoClo
     );
     public static final MethodHandle METAL_DISPATCH = LINKER.downcallHandle(
         LOOKUP.find("metal_dispatch").orElse(null),
-        FunctionDescriptor.ofVoid(ValueLayout.ADDRESS, ValueLayout.JAVA_INT)
+        FunctionDescriptor.ofVoid(ValueLayout.ADDRESS,
+            ValueLayout.JAVA_INT, ValueLayout.JAVA_INT, ValueLayout.JAVA_INT, // grid X, grid Y, grid Z
+            ValueLayout.JAVA_INT, ValueLayout.JAVA_INT, ValueLayout.JAVA_INT // blockX, blockY, blockZ
+        )
     );
     public static final MethodHandle METAL_END_ENCODING = LINKER.downcallHandle(
         LOOKUP.find("metal_end_encoding").orElse(null),
@@ -27,8 +30,8 @@ public record MetalEncoder(MemorySegment handle) implements MetalObject, AutoClo
         METAL_ENCODER_SET_BUFFER.invokeExact(handle, buf.handle(), index);
     }
 
-    public void dispatch(int threadCount) throws Throwable {
-        METAL_DISPATCH.invokeExact(handle, threadCount);
+    public void dispatchThreads(int gridX, int gridY, int gridZ, int blockX, int blockY, int blockZ) throws Throwable {
+        METAL_DISPATCH.invokeExact(handle, gridX, gridY, gridZ, blockX, blockY, blockZ);
     }
 
     public void endEncoding() throws Throwable {

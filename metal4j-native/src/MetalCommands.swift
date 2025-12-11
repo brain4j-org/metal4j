@@ -34,12 +34,13 @@ public func metal_encoder_set_buffer(
 @_cdecl("metal_dispatch")
 public func metal_dispatch(
     encPtr: UnsafeMutableRawPointer,
-    threadCount: Int
+    gridX: Int, gridY: Int, gridZ: Int,
+    blockX: Int, blockY: Int, blockZ: Int,
 ) {
     let encoder: MTLComputeCommandEncoder = pointerToObject(encPtr)
 
-    let gridSize = MTLSize(width: threadCount, height: 1, depth: 1)
-    let threadgroupSize = MTLSize(width: 1, height: 1, depth: 1)
+    let gridSize = MTLSize(width: gridX, height: gridY, depth: gridZ)
+    let threadgroupSize = MTLSize(width: blockX, height: blockY, depth: blockZ)
 
     encoder.dispatchThreads(gridSize, threadsPerThreadgroup: threadgroupSize)
 }
