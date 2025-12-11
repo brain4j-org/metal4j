@@ -33,3 +33,7 @@ tasks.withType(Test).configureEach {
 tasks.withType(JavaExec).configureEach {
     jvmArgs += "--enable-preview"
 }
+
+test {
+    failOnNoDiscoveredTests = false
+}
