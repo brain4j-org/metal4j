@@ -1,6 +1,10 @@
 # Metal4J
 
-**This project is in early development stage!** Expect bugs and issues.
+---
+# ⚠️ Warning
+
+## This project is no longer in development and has been replaced by [Silicon](https://github.com/brain4j-org/silicon).
+---
 
 Metal4J provides **pure Java bindings** for Apple’s **Metal API**, built on top of the **Foreign Function & Memory (FFM) API** 
 introduced in Java 22 and stabilized in Java 25. It enables GPU programming on macOS directly from Java.
